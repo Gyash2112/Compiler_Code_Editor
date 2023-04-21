@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPILER</title>
+    <link rel="stylesheet" href="codemirror-5.65.12/lib/codemirror.css">
+    <script src="codemirror-5.65.12/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.12/mode/clike/clike.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.12/theme/dracula.css">
+    <link rel="stylesheet" href="codemirror-5.65.12/addon/fold/foldgutter.css">
+    <script src="codemirror-5.65.12/addon/edit/closebrackets.js"></script>
+    <script src="codemirror-5.65.12/mode/python/python.js"></script>
+    <script src="codemirror-5.65.12/addon/fold/foldcode.js"></script>
+    <script src="codemirror-5.65.12/addon/fold/indent-fold.js"></script>
+    <script src="codemirror-5.65.12/addon/fold/brace-fold.js"></script>
+    <script src="codemirror-5.65.12/addon/fold/foldgutter.js"></script>
+    <script src="codemirror-5.65.12/addon/fold/comment-fold.js"></script>
+    <style>
+      .CodeMirror{
+        /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+      font-size: 1rem;
+  }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <form action="/runCode" method="post">
+            <!-- <textarea name="code" id="" cols="30" rows="10">
+            </textarea>
+            <input type="text" name="input" id="">
+
+            <select name="language" id="">
+                <option value="java">JAVA</option>
+                <option value="py">Python3</option>
+            </select> -->
+            <textarea name="code" id="editor" cols="10" rows="30" ></textarea>
+
+    <select name="language" id="language">
+        <option value="java" selected>JAVA</option>
+        <option value="py">PYTHON</option>
+        <option value="c++">C++</option>
+    </select>
+
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+      var editor= CodeMirror.fromTextArea(document.getElementById("editor"),{
+            mode:"text/x-java",
+            theme:'dracula',
+            lineNumbers:true,
+            autoCloseBrackets:true,
+            indentUnit: 4,
+            lineWrapping:true,
+            // extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+            foldGutter:true,
+      //       foldGutter: {
+    	// rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.indent, CodeMirror.fold.comment)
+      //                   },
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+
+        });
+        
+        
+
+        var width = window.innerWidth;
+        editor.setSize(0.7 *width, "500");
+        var languages = document.getElementById('language');
+        editor.getDoc().setValue('class Main{\r\n' +
+    '   \r\n' +
+    '    public static void main(String args[]){\r\n' +
+    '        Solution s = new Solution();\r\n' +
+    '        System.out.println(s.calculate(4,5));\r\n' +
+    '        \r\n' +
+    '    }\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'class Solution{\r\n' +
+    '     public static int calculate(int x, int y){\r\n' +
+    '        //Write your code here\r\n' +
+    '        \r\n' +
+    '    }\r\n' +
+    '}');
+    editor.foldCode(CodeMirror.Pos(0));
+        
+        language.addEventListener("change", function(){
+            if(language.value=="java"){
+                editor.setOption("mode", "text/x-java");
+                editor.getDoc().setValue('class Main{\r\n' +
+    '   \r\n' +
+    '    public static void main(String args[]){\r\n' +
+    '        Solution s = new Solution();\r\n' +
+    '        System.out.println(s.calculate(4,5));\r\n' +
+    '        \r\n' +
+    '    }\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'class Solution{\r\n' +
+    '     public static int calculate(int x, int y){\r\n' +
+    '        //Write your code here\r\n' +
+    '        \r\n' +
+    '    }\r\n' +
+    '}');
+    editor.foldCode(CodeMirror.Pos(0));
+    
+            }
+            else if(language.value=="py"){
+                editor.setOption("mode", "python");
+                editor.getDoc().setValue('def calculate(x,y):\n\t#write your code here\nprint(calculate(4,5))')
+                editor.foldCode(CodeMirror.Pos(0));
+            }
+            else if(language.value=="c++"){
+                editor.setOption("mode", "text/x-c++src");
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!-- <html lang="en">
+  <head>
+    <title>Code-Editor</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="codemirror.css" />
+    <link rel="stylesheet" href="show-hint.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a class="btn" id="run-btn">Run</a></li>
+          <li class="nav-item dropdown">
+            <a class="btn dropdown-toggle" type="button" data-toggle="dropdown"
+              >Options <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu">
+              <li><a href="javascript:autoFormatSelection()">Format</a></li>
+              <li><a href="javascript:commentSelection(true)">Comment</a></li>
+              <li>
+                <a href="javascript:commentSelection(false)">Uncomment</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="editor">
+      <div id="resizeMe" class="code a">
+        <div class="html-code"></div>
+      </div>
+      <div class="code pa">
+        <iframe id="preview-window"></iframe>
+      </div>
+    </div>
+  </body>
+  <script src="codemirror.js"></script>
+  <script src="formatting.js"></script>
+  <script src="show-hint.js"></script>
+  <script src="xml-hint.js"></script>
+  <script src="html-hint.js"></script>
+  <script src="xml.js"></script>
+  <script src="javascript.js"></script>
+  <script src="css.js"></script>
+  <script src="htmlmixed.js"></script>
+  <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+    Split([".a", ".pa"]);
+    var htmlEditor = CodeMirror(
+      document.querySelector(".editor .code .html-code"),
+      {
+        mode: "htmlmixed",
+        tabSize: 4,
+        lineNumbers: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+      }
+    );
+    CodeMirror.commands["selectAll"](htmlEditor);
+
+    function getSelectedRange() {
+      return {
+        from: htmlEditor.getCursor(true),
+        to: htmlEditor.getCursor(false),
+      };
+    }
+
+    function autoFormatSelection() {
+      var range = getSelectedRange();
+      htmlEditor.autoFormatRange(range.from, range.to);
+    }
+
+    function commentSelection(isComment) {
+      var range = getSelectedRange(),
+        selStart = htmlEditor.getCursor("start");
+      htmlEditor.commentRange(isComment, range.from, range.to);
+      htmlEditor.setSelection(selStart, htmlEditor.getCursor("end"));
+    }
+    document.querySelector("#run-btn").addEventListener("click", function () {
+      let htmlCode = htmlEditor.getValue();
+      let previewWindow =
+        document.querySelector("#preview-window").contentWindow.document;
+      previewWindow.open();
+      previewWindow.write(htmlCode);
+      previewWindow.close();
+    });
+  </script>
+</html> -->
