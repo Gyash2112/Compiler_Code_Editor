@@ -4,6 +4,10 @@ const app = express();
 var axios = require('axios');
 var qs = require('qs');
 const path = require('path');
+var compiler = require('compilex');
+const  unlink  = require('fs');
+
+compiler.init({stats : true});
 
 app.use(express.static('assets'));
 app.use(express.urlencoded({extended:false}));
@@ -48,10 +52,22 @@ app.get('/',function(req,res){
 
 app.post('/runCode',  async function(req,res){
   console.log(req.body);
+  var envData = { OS : "windows"}; 
+  compiler.compileJava( envData , req.body.code , function(data){
+    compiler.flush(function(){
+      console.log("Deleted!");
+    });
+    
+    return res.send(data); 
+    
+
+});   
   // var output = await getOutput(req.body);
   // if(output.error) return res.send(output.error);
-  return res.send(output.output);
+  // return res.send(output.output);
 })
+
+delete './temp/dn0l8ms';
 
 app.listen(8000, function(err){
     console.log("connected to 8000");
