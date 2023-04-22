@@ -5,7 +5,7 @@ var axios = require('axios');
 var qs = require('qs');
 const path = require('path');
 var compiler = require('compilex');
-const  unlink  = require('fs');
+const  fs  = require('fs-extra');
 
 compiler.init({stats : true});
 
@@ -54,9 +54,7 @@ app.post('/runCode',  async function(req,res){
   console.log(req.body);
   var envData = { OS : "windows"}; 
   compiler.compileJava( envData , req.body.code , function(data){
-    compiler.flush(function(){
-      console.log("Deleted!");
-    });
+    compiler.flushSync();
     
     return res.send(data); 
     
@@ -67,7 +65,7 @@ app.post('/runCode',  async function(req,res){
   // return res.send(output.output);
 })
 
-delete './temp/dn0l8ms';
+
 
 app.listen(8000, function(err){
     console.log("connected to 8000");
